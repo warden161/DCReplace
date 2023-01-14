@@ -1,29 +1,28 @@
 ﻿using System;
+using DCReplace.Handlers.Patches;
+using FMODUnity;
+using HarmonyLib;
+using PluginAPI.Core.Attributes;
+using PluginAPI.Events;
 
 namespace DCReplace
 {
-    public class Plugin : Exiled.API.Features.Plugin<Config>
+    public class Plugin
     {
-        public override string Name { get; } = "DCReplace";
-        public override string Author { get; } = "warden161";
-        public override Version Version { get; } = new Version(1, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
+        public static Plugin Instance { get; private set; }
+        public Harmony Harmony { get; set; }
+        public const string HarmonyId = "warden161.scpsl.dcreplace";
 
-        public static Plugin Instance { get; }
-        internal EventHandlers Events { get; set; }
-
-        public override void OnEnabled()
+        [PluginEntryPoint("DCReplace", "0.1.0", "Replaces disconnected players.", "warden161")]
+        public void OnEnabled()
         {
-            Events = new EventHandlers();
-            base.OnEnabled();
+            Harmony = new Harmony(HarmonyId);
+            Harmony.PatchAll();
+
+            Instance = this;
+            EventManager.RegisterEvents<EventHandlers>(this);
         }
 
-        public override void OnDisabled()
-        {
-            Events.Dispose();
-
-            Events = null;
-            base.OnDisabled();
-        }
+        [PluginConfig] public Config Config;
     }
 }
