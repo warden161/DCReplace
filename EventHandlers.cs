@@ -33,7 +33,7 @@ namespace DCReplace
         public void OnLeft(LeftEventArgs ev)
         {
             var spectators = Player.List.Where(x => x.Role.IsDead);
-            if (spectators.Count() == 0) //TODO: replace "queue", if someone dies within specified time, have them replace him
+            if (spectators.Count() == 0 || Plugin.Instance.Config.BlacklistedRoles.Contains(ev.Player.Role.Type)) //TODO: replace "queue", if someone dies within specified time, have them replace him
                 return;
 
             var player = Random(spectators);
@@ -69,6 +69,7 @@ namespace DCReplace
         {
             yield return Timing.WaitForSeconds(0.5f);
             data.Apply(player);
+            player.Broadcast(5, Plugin.Instance.Config.ReplaceMessage);
             DisconnectedPlayers.Remove(player.UserId);
         }
 

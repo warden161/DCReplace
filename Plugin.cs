@@ -9,11 +9,13 @@ namespace DCReplace
         public override Version Version { get; } = new Version(1, 0, 0);
         public override Version RequiredExiledVersion { get; } = new Version(6, 0, 0);
 
-        public static Plugin Instance { get; }
+        public static Plugin Instance { get; private set; }
         internal EventHandlers Events { get; set; }
 
         public override void OnEnabled()
         {
+            Instance = this;
+
             Events = new EventHandlers();
             base.OnEnabled();
         }

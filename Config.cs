@@ -10,5 +10,6 @@ namespace DCReplace
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; }
         public string ReplaceMessage { get; set; } = "Replaced a player who disconnected";
+        public List<RoleTypeId> BlacklistedRoles { get; set; } = new List<RoleTypeId>();
     }
 }
