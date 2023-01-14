@@ -47,9 +47,9 @@
     <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)/Assembly-CSharp-firstpass.dll" Private="false" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\BaseData.cs" />
-    <Compile Include="Data\Scp079Data.cs" />
-    <Compile Include="Data\FpcData.cs" />
+    <Compile Include="API\Interfaces\IData.cs" />
+    <Compile Include="Handlers\Scp079Data.cs" />
+    <Compile Include="Handlers\FpcData.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers.cs" />

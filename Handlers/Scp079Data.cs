@@ -4,16 +4,14 @@ using System.Data;
 
 namespace DCReplace.Data
 {
-    public class Scp079Data : BaseData
+    public struct Scp079Data : IData
     {
         public Camera Camera { get; set; }
         public float Energy { get; set; }
         public int Level { get; set; }
         public int Experience { get; set; }
 
-        public Scp079Data(Player player) : base(player) { }
-
-        public override void Initialize(Player player)
+        public void Initialize(Player player)
         {
             var role = player.Role.As<Scp079Role>();
 
@@ -23,7 +21,7 @@ namespace DCReplace.Data
             Experience = role.Experience;
         }
 
-        public override void Apply(Player player)
+        public void Apply(Player player)
         {
             var role = player.Role.As<Scp079Role>();
             role.Camera = Camera;

@@ -32,23 +32,22 @@ namespace DCReplace
 
         public void OnLeft(LeftEventArgs ev)
         {
-            var spectators = Player.Get(RoleTypeId.Spectator);
-            if (spectators.IsEmpty() || Plugin.Instance.Config.BlacklistedRoles.Contains(ev.Player.Role.Type)) //TODO: replace "queue", if someone dies within specified time, have them replace him
+            var spectators = Player.List.Where(x => x.Role.IsDead);
+            if (spectators.Count() == 0) //TODO: replace "queue", if someone dies within specified time, have them replace him
                 return;
 
             var player = Random(spectators);
             DisconnectedPlayers.Add(ev.Player.UserId);
             player.Role.Set(ev.Player.Role.Type);
 
-            BaseData data;
-
+            IData data;
             if (ev.Player.Role.Type == RoleTypeId.Scp079)
-                data = new Scp079Data(ev.Player);
+                data = new Scp079Data();
             else
-                data = new FpcData(ev.Player);
+                data = new FpcData();
 
+            data.Initialize(ev.Player);
             Timing.RunCoroutine(RespawnPlayer(player, data));
-            DisconnectedPlayers.Add(ev.Player.UserId);
         }
 
         public void OnSpawningRagdoll(SpawningRagdollEventArgs ev)
@@ -64,9 +63,9 @@ namespace DCReplace
         }
 
         public T Random<T>(IEnumerable<T> @enum)
-            => @enum.ElementAt(Exiled.Loader.Loader.Random.Next(0, @enum.Count()));
+            => @enum.ElementAt(Exiled.Loader.Loader.Random.Next(@enum.Count()));
 
-        public IEnumerator<float> RespawnPlayer(Player player, BaseData data)
+        public IEnumerator<float> RespawnPlayer(Player player, IData data)
         {
             yield return Timing.WaitForSeconds(0.5f);
             data.Apply(player);

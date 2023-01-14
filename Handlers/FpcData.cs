@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace DCReplace.Data
 {
-    public class FpcData : BaseData
+    public struct FpcData : IData
     {
         public Vector3 Position { get; set; }
         public Vector3 Rotation { get; set; }
@@ -15,8 +15,7 @@ namespace DCReplace.Data
         public float Ahp { get; set; }
         public List<Item> Items { get; set; }
 
-        public FpcData(Player player) : base(player) { }
-        public override void Initialize(Player player)
+        public void Initialize(Player player)
         {
             Position = player.Position;
             Rotation = player.Rotation;
@@ -26,7 +25,7 @@ namespace DCReplace.Data
             Items = player.Items.ToList();
         }
 
-        public override void Apply(Player player)
+        public void Apply(Player player)
         {
             player.Position = Position;
             player.Rotation = Rotation;
